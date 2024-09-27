@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Smart Irrigation System</title>
+  <link href="output.css" rel="stylesheet">
+
+</head>
+
+<body class="bg-gray-100 font-sans leading-normal tracking-normal w-full">
+
+  <!-- Navbar -->
+  <nav class="bg-green-600 p-4">
+    <div class="container mx-auto">
+      <div class="flex justify-between items-center">
+        <h1 class="text-white text-2xl font-bold">Smart Irrigation System</h1>
+      </div>
+    </div>
+  </nav>
+
+  <!--Form - 1 -->
+  <div class="container mx-auto mt-10 px-6 bg-white p-6 rounded-lg shadow-lg">
+    <!-- Input Form -->
+    <div class="">
+      <h2 class="text-xl font-bold mb-4 text-gray-700">Crop Data</h2>
+
+      <form id="water-usage-form">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Crop Name -->
+          <div class="flex flex-col">
+            <label for="cropType" class="mb-2 font-semibold text-gray-700">Crop Type:</label>
+            <select type="text" id="cropType" class="p-3 border border-gray-300 rounded-lg" placeholder="e.g., Wheat"
+              required>
+              <option value="garlic">Garlic</option>
+              <option value="Gram">Gram</option>
+              <option value="Guava">Guava</option>
+              <option value="Bajra">Bajra</option>
+              <option value="Pulses">Pulses</option>
+              <option value="Citrus">Citrus</option>
+              <option value="Opium">Opium</option>
+              <option value="Cumin">Cumin</option>
+              <option value="Cotton">Cotton</option>
+              <option value="Mango">Mango</option>
+              <option value="Coriander">Coriander</option>
+              <option value="Wheat">Wheat</option>
+              <option value="Mustard">Mustard</option>
+            </select>
+          </div>
+
+          <!-- Irrigation Type -->
+          <div class="flex flex-col">
+            <label for="irrigationType" class="mb-2 font-semibold text-gray-700">Crop Type:</label>
+            <select type="text" id="irrigationType" class="p-3 border border-gray-300 rounded-lg"
+              placeholder="e.g., Wheat" required>
+              <option value="tubeWell">Tube Well</option>
+              <option value="dripIrrigation">Drip Irrigation</option>
+              <option value="canalIrrigation">Canal Irrigation</option>
+              <option value="sprinklerIrrigation">Sprinkler Irrigation</option>
+            </select>
+          </div>
+
+
+          <!-- Water Availability -->
+          <div class="flex flex-col">
+            <label for="waterAvailability" class="mb-2 font-semibold text-gray-700">Water Availability (liters/km) :
+            </label>
+            <input type="number" id="waterAvailability" class="p-3 border border-gray-300 rounded-lg"
+              placeholder="e.g., 1000" required>
+          </div>
+        </div>
+        <!-- Submit Button -->
+        <div class="mt-6">
+          <button type="submit" class="bg-green-600 text-white p-3 rounded-lg w-full md:w-auto">Find Water
+            Consumption</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Water Consumption Recommendations -->
+    <div id="water-usage-output" class="bg-white p-6 rounded-lg shadow-lg mt-10">
+      <h2 class="text-xl font-bold mb-4 text-gray-700">Optimal Water Quantity Required</h2>
+      <p class="text-gray-700" id="water-usage-text">No Value available yet.</p>
+    </div>
+  </div>
+
+  <!-- Form - 2 -->
+  <div class="container mx-auto mt-10 bg-white p-6 rounded-lg shadow-lg">
+    <!-- Input Form -->
+    <div class="">
+      <h2 class="text-xl font-bold mb-4 text-gray-700">Soil Data</h2>
+
+      <form id="irrigation-form">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+          <!-- Soil Moisture -->
+          <div class="flex flex-col">
+            <label for="soilMoisture" class="mb-2 font-semibold text-gray-700">Soil Moisture (%) : </label>
+            <input type="number" id="soilMoisture" class="p-3 border border-gray-300 rounded-lg" placeholder="e.g., 500"
+              required>
+          </div>
+
+          <!-- Temperature -->
+          <div class="flex flex-col">
+            <label for="temperature" class="mb-2 font-semibold text-gray-700">Temperature (in Celcius) : </label>
+            <input type="number" id="temperature" class="p-3 border border-gray-300 rounded-lg" placeholder="e.g., 5"
+              required>
+          </div>
+
+          <!-- Humidity -->
+          <div class="flex flex-col">
+            <label for="humidity" class="mb-2 font-semibold text-gray-700">Humidity (%) : </label>
+            <input type="number" id="humidity" class="p-3 border border-gray-300 rounded-lg" placeholder="e.g., 15"
+              required>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="mt-6">
+          <button type="submit" class="bg-green-600 text-white p-3 rounded-lg w-full md:w-auto">Get Irrigation
+            Recommendation</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Irrigation Recommendations -->
+    <div id="recommendation-output" class="bg-white p-6 rounded-lg shadow-lg mt-10">
+      <h2 class="text-xl font-bold mb-4 text-gray-700">Irrigation Recommendation</h2>
+      <p class="text-gray-700" id="recommendation-text">No recommendation available yet.</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-green-600 text-white p-4 mt-10 w-screen">
+    <div class="container text-center p-4">
+      <p>© 2024 Smart Irrigation System</p>
+    </div>
+  </footer>
+
+  <script>
+    // Event listener for water usage form
+    document.getElementById('water-usage-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Fetch data from the form
+      const cropName = document.getElementById('cropType').value;
+      const irrigationType = document.getElementById('irrigationType').value;
+      const waterAvailability = document.getElementById('waterAvailability').value;
+
+      const API_URL = 'http://localhost:5000';
+
+      // Send data to the Flask API
+      fetch(`${API_URL}/amount`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          cropName: cropName,
+          irrigationType: irrigationType,
+          waterAvailability: waterAvailability
+        })
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Display recommendation
+          document.getElementById('water-usage-output').classList.remove('hidden');
+          document.getElementById('water-usage-text').innerText =
+            `Optimal Water Usage Recommendation: ${data.amount} litres/km`;
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    // Event listener for irrigation recommendation form
+    document.getElementById('irrigation-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Fetch data from the form
+      const soilMoisture = document.getElementById('soilMoisture').value;
+      const temperature = document.getElementById('temperature').value;
+      const humidity = document.getElementById('humidity').value;
+
+      // Use the ngrok URL
+      const API_URL = 'http://172.28.0.12:5000/recommendation';
+
+      // Send data to the Flask API
+      fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          soilMoisture: soilMoisture,
+          temperature: temperature,
+          humidity: humidity
+        })
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Display recommendation
+          document.getElementById('recommendation-output').classList.remove('hidden');
+          document.getElementById('recommendation-text').innerText =
+            `It is ${data.recommendation} to irrigate the crop now.`;
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+  </script>
+</body>
+
+</html>
